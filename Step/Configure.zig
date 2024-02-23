@@ -101,7 +101,7 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
         b.graph.zig_exe,
     }));
 
-    try env_map.put("CFLAGS", b.fmt("-target={s} -mcpu={s} -O{s}", .{
+    try env_map.put("CFLAGS", b.fmt("-target {s} -mcpu={s} -O{s}", .{
         try self.target.query.zigTriple(arena),
         try self.target.query.serializeCpuAlloc(arena),
         @as([]const u8, switch (self.optimize) {
