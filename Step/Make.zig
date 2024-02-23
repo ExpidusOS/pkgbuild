@@ -15,7 +15,7 @@ pub fn create(b: *std.Build, options: Options) *Make {
     self.* = .{
         .step = std.Build.Step.init(.{
             .id = .custom,
-            .name = b.fmt("Make Install {}", .{options.source.getDisplayName()}),
+            .name = b.fmt("Make Install {s}", .{options.source.getDisplayName()}),
             .owner = b,
             .makeFn = make,
         }),
@@ -33,7 +33,7 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
     var man = b.graph.cache.obtain();
     defer man.deinit();
 
-    try man.addFile(b.pathJoin(&.{ self.source.getPath2(b, step), "Makefile" }), null);
+    _ = try man.addFile(b.pathJoin(&.{ self.source.getPath2(b, step), "Makefile" }), null);
 
     if (try step.cacheHit(&man)) return;
 

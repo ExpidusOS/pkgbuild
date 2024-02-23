@@ -36,7 +36,7 @@ pub fn create(b: *std.Build, options: Options) *Autoconf {
     self.* = .{
         .step = std.Build.Step.init(.{
             .id = .custom,
-            .name = b.fmt("Autoconf {}", .{options.source.getDisplayName()}),
+            .name = b.fmt("Autoconf {s}", .{options.source.getDisplayName()}),
             .owner = b,
             .makeFn = make,
         }),
