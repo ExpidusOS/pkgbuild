@@ -79,6 +79,10 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
         })}),
     });
 
+    if (b.sysroot) |sysroot| {
+        try args.append(b.fmt("--with-sysroot={s}", .{sysroot}));
+    }
+
     try args.appendSlice(self.flags.items);
 
     try step.handleChildProcUnsupported(null, args.items);
