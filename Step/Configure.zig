@@ -71,7 +71,7 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
         b.pathJoin(&.{ self.source.getPath2(b, step), "configure" }),
         b.fmt("--build={s}", .{try self.target.query.zigTriple(arena)}),
         "--prefix=/usr",
-        b.fmt("--includedir={s}", .{b.cache_root.join(b.allocator, &.{ "expidus-dev", "include" })}),
+        b.fmt("--includedir={s}", .{try b.cache_root.join(b.allocator, &.{ "expidus-dev", "include" })}),
         b.fmt("--enable-{s}", .{@as([]const u8, switch (self.linkage) {
             .dynamic => "shared",
             else => @tagName(self.linkage),
@@ -120,7 +120,7 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
         .allocator = arena,
         .argv = args.items,
         .cwd = self.source.getPath2(b, step),
-        .env_map = env_map,
+        .env_map = &env_map,
     }) catch |err| return step.fail("unable to spawn {s}: {s}", .{ cmd, @errorName(err) });
 
     if (result.stderr.len > 0) {
