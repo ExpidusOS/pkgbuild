@@ -30,7 +30,7 @@ force: bool,
 install: bool,
 output_file: std.Build.GeneratedFile,
 
-pub fn create(b: *std.Build, options: Options) Autoconf {
+pub fn create(b: *std.Build, options: Options) *Autoconf {
     const arena = b.allocator;
     const self = arena.create(Autoconf) catch @panic("OOM");
     self.* = .{
@@ -59,7 +59,7 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
     var man = b.graph.cache.obtain();
     defer man.deinit();
 
-    try man.addFile(b.pathJoin(&.{ self.source.getPath2(b, step), "configure.ac" }), null);
+    _ = try man.addFile(b.pathJoin(&.{ self.source.getPath2(b, step), "configure.ac" }), null);
 
     self.output_file.path = b.pathJoin(&.{ self.source.getPath2(b, step), "configure.ac" });
 

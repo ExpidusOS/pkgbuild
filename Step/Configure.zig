@@ -6,7 +6,7 @@ pub const Options = struct {
     source: std.Build.LazyPath,
     target: std.Build.ResolvedTarget,
     optimize: std.builtin.OptimizeMode = .Debug,
-    linkage: std.Build.Step.Compile.Linkage = .Static,
+    linkage: std.Build.Step.Compile.Linkage = .static,
     flags: ?[]const []const u8 = null,
 };
 
@@ -18,7 +18,7 @@ linkage: std.Build.Step.Compile.Linkage,
 flags: std.ArrayListUnmanaged([]const u8),
 output_file: std.Build.GeneratedFile,
 
-pub fn create(b: *std.Build, options: Options) Configure {
+pub fn create(b: *std.Build, options: Options) *Configure {
     const arena = b.allocator;
     const self = arena.create(Configure) catch @panic("OOM");
     self.* = .{

@@ -9,7 +9,7 @@ pub const Options = struct {
 step: std.Build.Step,
 source: std.Build.LazyPath,
 
-pub fn create(b: *std.Build, options: Options) Make {
+pub fn create(b: *std.Build, options: Options) *Make {
     const arena = b.allocator;
     const self = arena.create(Make) catch @panic("OOM");
     self.* = .{
