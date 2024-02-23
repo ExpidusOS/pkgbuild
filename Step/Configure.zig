@@ -69,8 +69,8 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
     try args.appendSlice(&.{
         cmd,
         b.pathJoin(&.{ self.source.getPath2(b, step), "configure" }),
-        b.fmt("--build={s}", .{try self.target.query.zigTriple(arena)}),
-        b.fmt("--host={s}", .{try b.host.query.zigTriple(arena)}),
+        b.fmt("--build={s}", .{try self.target.result.linuxTriple(arena)}),
+        b.fmt("--host={s}", .{try b.host.result.linuxTriple(arena)}),
         "--prefix=/usr",
         b.fmt("--includedir={s}", .{try b.cache_root.join(b.allocator, &.{ "expidus-dev", "include" })}),
         b.fmt("--enable-{s}", .{@as([]const u8, switch (self.linkage) {
