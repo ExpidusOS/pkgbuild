@@ -16,6 +16,7 @@ target: std.Build.ResolvedTarget,
 optimize: std.builtin.OptimizeMode,
 linkage: std.Build.Step.Compile.Linkage,
 flags: std.ArrayListUnmanaged([]const u8),
+output_file: std.Build.GeneratedFile,
 
 pub fn create(b: *std.Build, options: Options) Configure {
     const arena = b.allocator;
@@ -32,6 +33,7 @@ pub fn create(b: *std.Build, options: Options) Configure {
         .optimize = options.optimize,
         .linkage = options.linkage,
         .flags = .{},
+        .output_file = .{ .step = &self.step },
     };
 
     self.source.addStepDependencies(&self.step);
@@ -56,6 +58,7 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
 
     try man.addFile(b.pathJoin(&.{ self.source.getPath2(b, step), "configure" }), null);
 
+    self.output_file.path = b.pathJoin(&.{ self.source.getPath2(b, step), "Makefile" });
     if (try step.cacheHit(&man)) return;
 
     const cmd = b.findProgram(&.{ "bash", "sh" }, &.{}) catch return step.fail("Cannot locate a shell", .{});

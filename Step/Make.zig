@@ -8,7 +8,6 @@ pub const Options = struct {
 
 step: std.Build.Step,
 source: std.Build.LazyPath,
-output_file: std.Build.GeneratedFile,
 
 pub fn create(b: *std.Build, options: Options) Make {
     const arena = b.allocator;
@@ -16,12 +15,11 @@ pub fn create(b: *std.Build, options: Options) Make {
     self.* = .{
         .step = std.Build.Step.init(.{
             .id = .custom,
-            .name = b.fmt("Make {}", .{options.source.getDisplayName()}),
+            .name = b.fmt("Make Install {}", .{options.source.getDisplayName()}),
             .owner = b,
             .makeFn = make,
         }),
         .source = options.source,
-        .output_file = .{ .step = &self.step },
     };
 
     self.source.addStepDependencies(&self.step);
@@ -43,6 +41,8 @@ fn make(step: *std.Build.Step, _: *std.Progress.Node) anyerror!void {
 
     try evalChildProcess(step, &.{
         cmd,
+        "install",
+        b.fmt("DESTDIR={s}", .{b.install_prefix}),
     }, self.source.getPath2(b, step));
     try step.writeManifest(&man);
 }
