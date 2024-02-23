@@ -1,0 +1,11 @@
+.{
+    .name = "pkgbuild",
+    .version = "0.0.0",
+    .paths = .{""},
+    .dependencies = .{
+        .build = .{
+            .url = "https://github.com/ExpidusOS/build/archive/aab78d6bd30004e002361dc5e66c090719bb88a7.tar.gz",
+            .hash = "1220fe80f8f80b02213a1aa25d000f65fc889e8f8e39d0a0344a35caaef9c1b35bb7",
+        },
+    },
+}
